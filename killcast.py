@@ -24,3 +24,15 @@ parser = argparse.ArgumentParser(description="Manipulate Chromecast Devices is y
 parser.add_arguments('-t', '--ip', help='IP Address of Chromecast', required=True)
 args = parser.parse_args()
 ip = args.ip
+
+priv_ip = False
+
+if ipaddress.ip_address(ip).is_private:
+	priv_ip = True
+else:
+	pass
+
+http_port = '8080'
+https_port = '8443'
+http_header = {'Content-Type': 'application/json'}
+https_header = {'Content-Type': 'application/json', 'Authorization':'kill.cast'}
