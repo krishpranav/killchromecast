@@ -36,3 +36,8 @@ http_port = '8080'
 https_port = '8443'
 http_header = {'Content-Type': 'application/json'}
 https_header = {'Content-Type': 'application/json', 'Authorization':'kill.cast'}
+
+def banner():
+	text = r'''
+	KILLCHROMECAST
+	'''
