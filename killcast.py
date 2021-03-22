@@ -86,4 +86,57 @@ def conn_test():
 	else:
 		print(G + '[+]' + C + ' Connection Test Passed' + W)
 
-	
+def info():
+    	print('\n' + Y + '[!] Getting Device Information...' + W + '\n')
+	dev_url = 'http://{}:{}/ssdp/device-desc.xml'.format(ip, http_port)
+	eur_url = 'http://{}:{}/setup/eureka_info'.format(ip, http_port)
+	try:
+		dev_rqst = requests.get(dev_url, headers=http_header, timeout=10)
+		dev_sc = dev_rqst.status_code
+		if dev_sc == 200:
+			root = ElementTree.fromstring(dev_rqst.text)
+			rtag = root.tag.strip('root')
+			rtag = rtag.strip('{}')
+			ns = {'ns' : '{}'.format(rtag)}
+			name = root.findall('.//ns:friendlyName', namespaces=ns)
+			manf = root.findall('.//ns:manufacturer', namespaces=ns)
+			model = root.findall('.//ns:modelName', namespaces=ns)
+			name = name[0].text
+			manf = manf[0].text
+			model = model[0].text
+			print (G + '[+]' + C + ' Name : ' + W + name)
+			print (G + '[+]' + C + ' Manufacturer : ' + W + manf)
+			print (G + '[+]' + C + ' Model Name : ' + W + model)
+		else:
+			print(R + '[-]' + C + ' Failed, Status : ' + W + str(dev_sc))
+			sys.exit()
+
+		eur_rqst = requests.get(eur_url, headers=http_header, timeout=10)
+		eur_sc = eur_rqst.status_code
+		key_list = [
+			'bssid', 'build_version',
+			'cast_build_revision', 'ethernet_connected',
+			'locale', 'mac_address',
+			'noise_level', 'signal_level',
+			'ssid', 'timezone',
+			'uptime', 'wpa_configured'
+		]
+
+		if eur_sc == 200:
+			infjson = eur_rqst.json()
+			for key, value in infjson.items():
+				if key in key_list:
+					key = key.replace('_', ' ').title()
+					if value == '':
+						value = 'Not Available'
+					else:
+						pass
+					print(G + '[+]' + C + ' {} : '.format(key) + W + str(value))
+				else:
+					pass
+		else:
+			print(R + '[-]' + C + ' Failed, Status : ' + W + str(eur_sc))
+			sys.exit()
+	except Exception as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+
