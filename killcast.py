@@ -270,3 +270,19 @@ def reboot():
 	else:
 		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
 
+def reset():
+	print ('\n' + Y + '[!] Sending Request...' + W)
+	reset = 'https://{}:{}/setup/reboot'.format(ip, https_port)
+	data = {'params' : 'fdr'}
+	try:
+		r = requests.post(reset, json=data, headers=https_header, verify=False)
+	except Exception as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+		return
+	
+	r_sc = r.status_code
+	if r_sc == 200:
+		print(G + '[+]' + C + ' Action Completed!' + W)
+	else:
+		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+
