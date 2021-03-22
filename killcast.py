@@ -220,3 +220,21 @@ def wscan():
 					print(G + '[+]' + C + ' {} : '.format(key) + W + str(value))
 	else:
 		print(R + '[-]' + C + ' Failed, Status : ' + W + str(result_sc))
+
+def wforget():
+	choice = input('\n' + G + '[+]' + C + ' WPA ID : ' + W)
+	url = 'https://{}:{}/setup/forget_wifi'.format(ip, https_port)
+	data = {"wpa_id": int(choice)}
+	print('\n' + Y + '[!] Sending Request.....' + W)
+	try:
+		r = requests.post(url, json=data, headers=https_header, timeout=10, verify=False)
+	except Exception as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+		return
+	
+	r_sc = r.status_code
+	if r_sc == 200:
+		print(G + '[+]' + C + ' Action Completed!' + W)
+	else:
+		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+		
