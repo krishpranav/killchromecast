@@ -165,3 +165,24 @@ def iprecon():
 	except Exception as exc:
 		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
 
+
+def saved_net():
+	print('\n' + Y + '[!] Sending Request...' + W)
+	url = 'https://{}:{}/setup/configured_networks'.format(ip, https_port)
+	try:
+		r = requests.get(url, headers=https_header, timeout=10, verify=False)
+	except Exception as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+		return
+	r_sc = r.status_code
+	if r_sc == 200:
+		r_data = r.text
+		json_data = json.loads(r_data)
+		for entry in json_data:
+			print()
+			for key, value in entry.items():
+				key = key.replace('_', ' ').title()
+				print(G + '[+]' + C + ' {} : '.format(key) + W + str(value))
+	else:
+		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+
