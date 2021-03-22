@@ -41,3 +41,24 @@ def banner():
 	text = r'''
 	KILLCHROMECAST
 	'''
+
+def var_check():
+	print(G + '[+]' + C + ' Checking for Updates...', end='')
+	ver_url = 'https://raw.githubusercontent.com/krishpranav/killchromecast/master/version.txt'
+	try:
+		ver_reqst = requests.get(ver_url, timeout=5)
+		var_sc = ver_rqst.status_code
+		if ver_sc == 200:
+			github_ver = ver_rqst.text()
+			github_ver = github_ver.strip()
+			if version == github_ver:
+				print(C + '[' + G + ' Up-To-Date ' + C +']' + '\n')
+			else:
+				print(C + '[' + G + ' Available : {} '.format(github_ver) + C + ']' + '\n')
+		else:
+			print(C + '[' + R + ' Status : {} '.format(ver_sc) + C + ']' + '\n')
+	except Exception as e:
+		print('\n\n' + R + '[-]' + C + ' Exception : ' + W + str(e))
+
+
+
