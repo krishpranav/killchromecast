@@ -237,4 +237,19 @@ def wforget():
 		print(G + '[+]' + C + ' Action Completed!' + W)
 	else:
 		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
-		
+	
+def rename():
+	newname = input('\n' + G + '[+]' + C + ' New Name : ' + W)
+	url = 'https://{}:{}/setup/set_eureka_info'.format(ip, https_port)
+	data = {'name': '{}'.format(newname)}
+	print(Y + '[!] Sending Request...' + W)
+	try:
+		r = requests.post(url, json=data, headers=https_header, timeout=False)
+	except Excpetion as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+		return
+	r_sc = r.status_code
+	if r_sc == 200:
+    		print(G + '[+]' + C + ' Action Completed!' + W)
+	else:
+    		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
