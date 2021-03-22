@@ -253,3 +253,20 @@ def rename():
     		print(G + '[+]' + C + ' Action Completed!' + W)
 	else:
     		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+
+
+def reboot():
+	print ('\n' + Y + '[!] Sending Request...' + W)
+	url = 'https://{}:{}/setup/reboot'.format(ip, https_port)
+	data = {'params' : 'now'}
+	try:
+		r = requests.post(url, json=data, headers=https_header, verify=False)
+	except Exception as e:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+		return
+	r_sc = r.status_code
+	if r_sc == 200:
+		print(G + '[+]' + C + ' Action Completed!' + W)
+	else:
+		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+
