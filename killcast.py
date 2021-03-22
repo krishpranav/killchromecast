@@ -186,3 +186,37 @@ def saved_net():
 	else:
 		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
 
+
+def wscan():
+    	print('\n' + Y + '[!] Sending Request...' + W)
+	scan_url = 'https://{}:{}/setup/scan_wifi'.format(ip, https_port)
+	result_url = 'https://{}:{}/setup/scan_results'.format(ip, https_port)
+	try:
+		scan_r = requests.post(scan_url, headers=https_header, timeout=10, verify=False)
+	except Exception as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+		return
+	scan_sc = scan_r.status_code
+	if scan_sc == 200:
+		print(G + '[+]' + C + ' Action Completed!' + W)
+	else:
+		print(R + '[-]' + C + ' Failed, Status : ' + W + str(scan_sc))
+	print(Y + '[!] Getting Scan Results...' + W)
+	key_list = ['bssid', 'signal_level', 'ssid']
+	try:
+		result_r = requests.get(result_url, headers=https_header, timeout=10, verify=False)
+	except Exception as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+		return
+	result_sc = result_r.status_code
+	if result_sc == 200:
+		result_data = result_r.text
+		result_json = json.loads(result_data)
+		for entry in result_json:
+			print()
+			for key, value in entry.items():
+				if key in key_list:
+					key = key.replace('_', ' ').title()
+					print(G + '[+]' + C + ' {} : '.format(key) + W + str(value))
+	else:
+		print(R + '[-]' + C + ' Failed, Status : ' + W + str(result_sc))
