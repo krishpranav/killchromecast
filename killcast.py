@@ -60,5 +60,30 @@ def var_check():
 	except Exception as e:
 		print('\n\n' + R + '[-]' + C + ' Exception : ' + W + str(e))
 
+def conn_test():
+	http_test = False
+	https_test = False
+	print('\n' + Y + '[!] Testing Connection...' + W + '\n')
+	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+		s.settimeout(5)
+		try:
+			s.connect((ip, int(http_port)))
+			http_test = True
+		except OSError:
+			print(R + '[-]' + C + ' Exception : ' + W + 'Cannot Connect to Port 8008')
+	
+	with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+		s.settimeout(5)
+		try:
+			s.connect((ip, int(https_port)))
+			https_test = True
+		except OSError:
+			print(R + '[-]' + C + ' Exception : ' + W + 'Cannot Connect to Port 8443')
 
+	if http_test == False or https_test == False:
+		print(R + '[-]' + C + ' Connection Test Failed' + W)
+		sys.exit()
+	else:
+		print(G + '[+]' + C + ' Connection Test Passed' + W)
 
+	
