@@ -140,3 +140,28 @@ def info():
 	except Exception as exc:
 		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
 
+def iprecon():
+	if priv_ip == True:
+		print('\n' + R + '[-]' + C + ' Private IP Address, Skipping...' + W)
+		return
+	else:
+		pass
+	print('\n' + Y + '[!] Getting IP Information...' + W + '\n')
+	key_list = ['country', 'city', 'isp', 'org', 'as']
+	service = 'http://ip-api.com/json'
+	serv_url = service + ip
+	try:
+		r = requests.get(serv_url, timeout=5)
+		r_sc = r.status_code
+		if r_sc == 200:
+			r_data = r.text
+			json_data = json.loads(r_data)
+			for key, value in json_data.items():
+				if key in key_list:
+					key = key.title()
+					print(G + '[+]' + C + ' {} : '.format(key) + W + str(value))
+		else:
+			print(R + '[-]' + C + ' Failed, Status : ' + W + str(r_sc))
+	except Exception as exc:
+		print(R + '[-]' + C + ' Exception : ' + W + str(exc))
+
